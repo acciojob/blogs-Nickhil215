@@ -29,16 +29,16 @@ public class UserService {
     }
 
     public void updateUser(User user) {
-        User updateuser = userRepository3.findByUsername(user.getUsername());
-       if(updateuser!=null){
-           updateuser.setLastName(user.getLastName());
-           updateuser.setFirstName(user.getFirstName());
-           updateuser.setPassword(user.getPassword());
-           updateuser.setUsername(user.getUsername());
-           userRepository3.save(updateuser);
-       }
-       userRepository3.save(user);
+        User currentUser = userRepository3.findByUsername(user.getUsername());
+        if (currentUser != null){
+            currentUser.setUsername(user.getUsername());
+            currentUser.setFirstName(user.getFirstName());
+            currentUser.setLastName(user.getLastName());
+            currentUser.setPassword(user.getPassword());
 
+            userRepository3.save(currentUser);
+        }
+        userRepository3.save(user);
 
     }
 

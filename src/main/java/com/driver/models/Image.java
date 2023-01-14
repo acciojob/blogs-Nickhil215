@@ -1,25 +1,29 @@
 package com.driver.models;
 
 import javax.persistence.*;
-import javax.xml.crypto.Data;
-import java.util.Date;
 
 @Entity
-@Table(name = "Image")
-public class Image {
+@Table
+public class Image{
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   private String description;
+
   private String dimensions;
 
-  public Image() {
-  }
+  @ManyToOne
+  @JoinColumn
+  private Blog blog;
 
   public Image(String description, String dimensions) {
     this.description = description;
     this.dimensions = dimensions;
+  }
+
+  public Image() {
   }
 
   public String getDescription() {
@@ -38,9 +42,13 @@ public class Image {
     this.dimensions = dimensions;
   }
 
-  @ManyToOne
-  @JoinColumn
-  private Blog blog;
+  public Blog getBlog() {
+    return blog;
+  }
+
+  public void setBlog(Blog blog) {
+    this.blog = blog;
+  }
 
   public int getId() {
     return id;
@@ -50,11 +58,4 @@ public class Image {
     this.id = id;
   }
 
-  public Blog getBlog() {
-    return blog;
-  }
-
-  public void setBlog(Blog blog) {
-    this.blog = blog;
-  }
 }

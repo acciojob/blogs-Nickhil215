@@ -1,29 +1,41 @@
 package com.driver.models;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "/bolg")
+@Table(name = "Blog")
 public class Blog {
 
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String title;
+
     private String content;
+
+    @CreationTimestamp
     private Date pubDate;
+
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
+    @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL)
+    private List<Image> imageList;
 
     public Blog() {
     }
 
-    public Blog(String title, String content, Date pubDate) {
+    public Blog(String title, String content) {
         this.title = title;
         this.content = content;
-        this.pubDate = pubDate;
     }
 
     public String getTitle() {
@@ -50,8 +62,13 @@ public class Blog {
         this.pubDate = pubDate;
     }
 
-  @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL)
-    private List<Image> imageList;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public List<Image> getImageList() {
         return imageList;
@@ -59,18 +76,6 @@ public class Blog {
 
     public void setImageList(List<Image> imageList) {
         this.imageList = imageList;
-    }
-
-    @ManyToOne
-    @JoinColumn
-    private User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public int getId() {
